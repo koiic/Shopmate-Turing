@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "babel-node": "babel-node --presets=env",
     "setup": "node ./setup.js",
-    "dev": "node ./index.js"
+    "dev": "babel-node ./index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,12 @@
   },
   "homepage": "https://github.com/koiic/Shopmate-Turing#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.4",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "nodemon": "^1.19.0"
   }
 }

@@ -1,4 +1,7 @@
-const express = require('express');
+import express from 'express';
+import {config} from 'dotenv'
+
+config()
 
 // create an instance of express
 const app = express();
