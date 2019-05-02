@@ -13,8 +13,8 @@ class ProductController {
    */
   static async viewAllProduct(req, res) {
     try {
-      const products = await ProductService.fetchallProduct();
-      return res.status(200).json(Message.success('product fetched successfully', products));
+      const products = await ProductService.fetchallProduct(req);
+      return res.status(200).json(products);
     } catch (error) {
       return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
     }
