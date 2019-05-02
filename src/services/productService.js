@@ -1,5 +1,5 @@
-import Sequelize from 'sequelize';
 import Model from '../db/models';
+import paginationHelper from '../utils/paginationHelper';
 
 const { Product } = Model;
 
@@ -16,14 +16,10 @@ class ProductService {
    * @static
    * @memberof ProductService
    */
-  static async fetchallProduct() {
-    console.log('+++I got here ');
-    const products = await Product.findOne({
-      where: {
-        product_id: 1000
-      }
-    });
-    return products;
+  static async fetchallProduct(request) {
+    const { limit, page, descriptionLength } = request.query;
+    const data = paginationHelper(Product, { limit, page, descriptionLength });
+    return data;
   }
 }
 
