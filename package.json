@@ -1,0 +1,28 @@
+{
+  "name": "yes",
+  "version": "1.0.0",
+  "description": "A shopping API with node backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "node ./setup.js",
+    "dev": "node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koiic/Shopmate-Turing.git"
+  },
+  "keywords": [
+    "shopping",
+    "turing"
+  ],
+  "author": "koiic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koiic/Shopmate-Turing/issues"
+  },
+  "homepage": "https://github.com/koiic/Shopmate-Turing#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
