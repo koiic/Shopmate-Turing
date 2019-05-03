@@ -3,8 +3,6 @@ import paginationHelper from '../utils/paginationHelper';
 
 const { Product } = Model;
 
-console.log('====', Product);
-
 /**
  * @class ProductService
  */
