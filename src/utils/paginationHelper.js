@@ -1,6 +1,6 @@
 
-const filterProductByDescription = (products, descLength) => {
-  const filteredProducts = products.filter((product) => {
+const stripProductDescription = (products, descLength) => {
+  const strippedProducts = products.filter((product) => {
     const productDescriptionLength = product.dataValues.description.length;
     if (productDescriptionLength > descLength) {
       product.dataValues.description = `${product.dataValues.description.slice(0, descLength)}...`;
@@ -9,13 +9,11 @@ const filterProductByDescription = (products, descLength) => {
     }
     return product;
   });
-  return filteredProducts;
+  return strippedProducts;
 };
 
 
 /**
- *
- *
  * @param {*} model
  * @param {*} queries
  * @returns {object} data
@@ -35,5 +33,5 @@ export default async function paginationHelper(model, queries) {
   }
   const data = await model.findAll({ limit, offset });
   const productCount = await model.count();
-  return { count: productCount, rows: filterProductByDescription(data, descrLength) };
+  return { count: productCount, rows: stripProductDescription(data, descrLength) };
 }

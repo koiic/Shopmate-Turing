@@ -46,12 +46,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     }
   }, { freezeTableName: true, tableName: 'product', timestamps: false });
-  Product.associate = (models) => {
-    // associations can be defined here
-    // Product.belongsToMany(models.Category, {
-    //   foreignKey: 'product_id',
-    //   through: 'product_category',
-    // });
-  };
+  // Product.associate = (models) => {
+  //   // associations can be defined here
+  //   // Product.belongsToMany(models.Category, {
+  //   //   foreignKey: 'product_id',
+  //   //   through: 'product_category',
+  //   // });
+  // };
   return Product;
 };

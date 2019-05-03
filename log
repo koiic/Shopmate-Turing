@@ -45,3 +45,12 @@
 [0mGET /api/v1/products?limit=20&page=1&descriptionLength=10 [32m200 [0m18.761 ms - 4399[0m
 [0mGET /api/v1/products?limit=20&page=1&descriptionLength=10 [32m200 [0m12.579 ms - 4399[0m
 [0mGET /api/v1/products?limit=20&page=1&descriptionLength=100 [32m200 [0m8.101 ms - 6123[0m
+[0mGET / [33m404 [0m4.375 ms - 139[0m
+[0mGET /api/v1/products?limit=2&page=1&descriptionLength=10 [36m304 [0m134.131 ms - -[0m
+[0mGET /api/v1/products [32m200 [0m20.352 ms - 228[0m
+[0mGET /api/v1/products [32m200 [0m14.767 ms - 228[0m
+[0mGET /api/v1/products [32m200 [0m14.377 ms - 228[0m
+[0mGET /api/v1/products [32m200 [0m14.589 ms - 228[0m
+[0mGET /api/v1/products [32m200 [0m13.612 ms - 228[0m
+[0mGET /api/v1/products [32m200 [0m14.106 ms - 228[0m
+[0mGET /api/v1/products [32m200 [0m14.307 ms - 228[0m

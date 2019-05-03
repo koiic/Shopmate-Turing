@@ -27,3 +27,5 @@ app.use('/api/v1', indexRoute);
 app.listen(port, () => {
   console.log(`server listening to port http://${host}:${port}`);
 });
+
+export default app;
