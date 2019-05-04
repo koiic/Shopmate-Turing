@@ -1,7 +1,9 @@
-import Model from '../db/models';
-import paginationHelper from '../utils/paginationHelper';
+/* eslint no-restricted-globals: ["error", "event", "fdescribe"] */
 
-const { Product } = Model;
+import Model from '../db/models';
+import PaginationHelper from '../utils/paginationHelper';
+
+const { Product, Category } = Model;
 
 /**
  * @class ProductService
@@ -16,8 +18,17 @@ class ProductService {
    */
   static async fetchallProduct(request) {
     const { limit, page, descriptionLength } = request.query;
-    const data = paginationHelper(Product, { limit, page, descriptionLength });
-    return data;
+    const queries = {
+      limit,
+      page,
+      descriptionLength,
+    };
+    try {
+      const data = await PaginationHelper.paginationHelper(Product, queries);
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
 
   /**
@@ -48,6 +59,57 @@ class ProductService {
       message: 'Product not found',
       field: 'product id'
     });
+  }
+
+  /**
+   *@description - this method fetch products by their category
+   *@param {object} request
+   *@param {object} response
+   *@returns {object} -products and product count
+   * @static
+   * @memberof ProductService
+   */
+  static async fetchProductsByCategory(request, response) {
+    const { category_id: categoryId } = request.params;
+    if (isNaN(categoryId)) {
+      return response.status(400).json({
+        message: 'Category id must be a number',
+        field: 'category id'
+      });
+    }
+    const { limit, page, descriptionLength } = request.query;
+    try {
+      const category = await Category.findOne({
+        where: { category_id: categoryId },
+        include: [{
+          model: Product,
+          attributes: [
+            'product_id',
+            'name',
+            'description',
+            'price',
+            'discounted_price',
+          ],
+          through: { attributes: [] },
+        }]
+      });
+      if (!category) {
+        return response.status(404).json({
+          code: 'CAT_01',
+          message: 'Don\'t exist in category with this id',
+          field: 'category id'
+        });
+      }
+      let rows = [];
+      rows = PaginationHelper.paginateResource(category.Products, page, limit);
+      if (descriptionLength) {
+        rows = PaginationHelper.stripRowByDescription(rows, descriptionLength);
+      }
+      const count = category.Products.length;
+      return response.status(200).json({ count, rows });
+    } catch (error) {
+      return error;
+    }
   }
 }
 

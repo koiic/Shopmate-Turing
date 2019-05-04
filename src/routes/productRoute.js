@@ -6,5 +6,6 @@ const productRoutes = Router();
 
 productRoutes.get('/', ProductController.viewAllProduct);
 productRoutes.get('/:product_id', ProductController.viewSingleProduct);
+productRoutes.get('/inCategory/:category_id', ProductController.viewProductByCategory);
 
 export default productRoutes;

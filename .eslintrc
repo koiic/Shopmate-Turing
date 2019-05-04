@@ -24,6 +24,7 @@
       "requireParamDescription": false,
       "requireReturnDescription": true
     }],
+    "allowTemplateLiterals": true,
     "require-jsdoc": ["error", {
         "require": {
             "FunctionDeclaration": true,

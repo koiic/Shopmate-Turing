@@ -28,11 +28,27 @@ class ProductController {
    * @memberof ProductController
    */
   static async viewSingleProduct(req, res) {
-    console.log('i got here');
     try {
-      return await ProductService.fetchSingleProduct(req, res);
+      const product = await ProductService.fetchSingleProduct(req, res);
+      return res.status(200).json(product);
     } catch (error) {
-      return res.status(500).json(Message.internalServerError(error));
+      return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
+    }
+  }
+
+  /**
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} data
+   * @memberof ProductController
+   */
+  static async viewProductByCategory(req, res) {
+    try {
+      const products = await ProductService.fetchProductsByCategory(req, res);
+      return products;
+    } catch (error) {
+      return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
     }
   }
 }
