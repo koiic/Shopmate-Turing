@@ -8,7 +8,7 @@ import PaginationHelper from '../utils/paginationHelper';
 const { Op } = Sequelize;
 
 
-const { Product, Category } = Model;
+const { Product, Category, Department } = Model;
 
 /**
  * @class ProductService
@@ -153,6 +153,69 @@ class ProductService {
         rows = PaginationHelper.stripRowByDescription(rows, descriptionLength);
       }
       const count = products.length;
+      return response.status(200).json({ count, rows });
+    } catch (error) {
+      return error;
+    }
+  }
+
+  /**
+   *@description - this method fetch products by their department
+   *@param {object} request
+   *@param {object} response
+   *@returns {object} -products and product count
+   * @static
+   * @memberof ProductService
+   */
+  static async fetchProductsByDepartment(request, response) {
+    const { department_id: departmentId } = request.params;
+    if (isNaN(departmentId)) {
+      return response.status(400).json({
+        message: 'Department id must be a number',
+        field: 'department id'
+      });
+    }
+    const { limit, page, description_length: descriptionLength } = request.query;
+    try {
+      const department = await Department.findOne({
+        where: { department_id: departmentId },
+        include: [{
+          model: Category,
+          attributes: [
+            'category_id'
+          ],
+          include: [{
+            model: Product,
+            attributes: [
+              'product_id',
+              'name',
+              'description',
+              'price',
+              'discounted_price',
+            ],
+            through: { attributes: [] },
+          }]
+        }]
+      });
+      if (!department) {
+        return response.status(404).json({
+          code: 'DEP_02',
+          message: 'Department with this id does not exist',
+          field: 'department id'
+        });
+      }
+      let rows = [];
+      const productRow = [];
+      const deptCategories = department.Categories;
+      deptCategories.forEach((value) => {
+        productRow.push(...value.Products);
+        return productRow;
+      });
+      rows = PaginationHelper.paginateResource(productRow, page, limit);
+      if (descriptionLength) {
+        rows = PaginationHelper.stripRowByDescription(rows, descriptionLength);
+      }
+      const count = productRow.length;
       return response.status(200).json({ count, rows });
     } catch (error) {
       return error;
