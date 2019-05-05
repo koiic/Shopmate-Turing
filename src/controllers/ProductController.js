@@ -61,11 +61,26 @@ class ProductController {
    */
   static async searchProduct(req, res) {
     try {
-      console.log('I entered here');
       const products = await ProductService.searchProduct(req, res);
       return products;
     } catch (error) {
       return res.status(500).json(Message.internalServerError(error));
+    }
+  }
+
+  /**
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} data
+   * @memberof ProductController
+   */
+  static async viewProductByDepartment(req, res) {
+    try {
+      const products = await ProductService.fetchProductsByDepartment(req, res);
+      return products;
+    } catch (error) {
+      return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
     }
   }
 }
