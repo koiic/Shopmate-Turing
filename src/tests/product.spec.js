@@ -81,7 +81,6 @@ describe('product test', () => {
       chai.request(app)
         .get('/api/v1/products/inCategory/1')
         .end((err, res) => {
-          console.log('=====____+===', res);
           expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body.count).to.be.equal(1);
@@ -109,6 +108,57 @@ describe('product test', () => {
           expect(res.body).to.be.an('object');
           expect(res.body.message).to.be.equal('Category id must be a number');
           expect(res.body.field).to.be.equal('category id');
+          done();
+        });
+    });
+
+    it('should return strip product description based on description length successfully', (done) => {
+      chai.request(app)
+        .get('/api/v1/products/inCategory/1?limit=1&description_length=20')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.count).to.be.equal(1);
+          expect(res.body.rows).to.be.an('array');
+          expect(res.body.rows[0].description).to.have.lengthOf.below(20 + 5);
+          done();
+        });
+    });
+  });
+
+  describe('search product', () => {
+    it('should return product successfully', (done) => {
+      chai.request(app)
+        .get('/api/v1/products/search?query_string=Second Product&all_words=on')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.count).to.be.equal(1);
+          expect(res.body.rows).to.be.an('array');
+          done();
+        });
+    });
+
+    it('should return product failed if query string does not exist', (done) => {
+      chai.request(app)
+        .get('/api/v1/products/search?query_string=gggggg')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.count).to.be.equal(0);
+          expect(res.body.rows).to.be.an('array');
+          done();
+        });
+    });
+
+    it('should return all product that contains the query-string successfully ', (done) => {
+      chai.request(app)
+        .get('/api/v1/products/search?query_string=Second Product&all_words=on')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body.count).to.be.equal(1);
+          expect(res.body.rows).to.be.an('array');
           done();
         });
     });
