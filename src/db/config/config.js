@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+require('dotenv').config();
 
 module.exports = {
   development: {
@@ -19,9 +17,10 @@ module.exports = {
     database: process.env.TEST_DB_NAME,
     host: '127.0.0.1',
     dialect: 'mysql',
+    port: process.env.TEST_DB_PORT,
     define: {
       timestamps: false
-    }
+    },
   },
   production: {
     username: 'root',

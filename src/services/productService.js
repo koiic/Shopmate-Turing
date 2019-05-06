@@ -17,11 +17,12 @@ class ProductService {
   /**
    *@description - this method fetch all products
    *@param {object} request
+   *@param {object} response
    *@returns {object} -products and product count
    * @static
    * @memberof ProductService
    */
-  static async fetchallProduct(request) {
+  static async fetchallProduct(request, response) {
     const { limit, page, descriptionLength } = request.query;
     const queries = {
       limit,
@@ -32,7 +33,7 @@ class ProductService {
       const data = await PaginationHelper.paginationHelper(Product, queries);
       return data;
     } catch (error) {
-      return error;
+      return response.status(500).json({ message: error.parent.sqlMessage });
     }
   }
 
