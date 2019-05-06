@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     },
     password: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     credit_card: {

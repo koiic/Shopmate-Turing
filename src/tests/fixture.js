@@ -23,6 +23,24 @@ export default {
   newproductcategory: {
     product_id: 1,
     category_id: 1,
+  },
+
+  validuser: {
+    email: 'goke@gmail.com',
+    name: 'tester',
+    password: 'gohkman'
+  },
+
+  invaliduser: {
+    email: '',
+    name: 'testuser',
+    password: 'fishcalory'
+  },
+
+  uncompleteuserdata: {
+    name: 'testing',
+    password: 'Password'
   }
+
 
 };
