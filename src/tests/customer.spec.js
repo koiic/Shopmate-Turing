@@ -91,4 +91,76 @@ describe('Customer Authentication', () => {
       done();
     });
   });
+
+  describe('authenticate customer', () => {
+    it('should login user successfully', (done) => {
+      chai.request(app)
+        .post('/api/v1/customers/login')
+        .send({
+          email: 'goke@gmail.com',
+          password: 'gohkman'
+        })
+        .end((err, res) => {
+          expect(res.status).to.be.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.contain('accessToken');
+          expect(res.body).to.contain('customer');
+        });
+      done();
+    });
+
+    // it('should fail if values are invalid', (done) => {
+    //   chai.request(app)
+    //     .post('/api/v1/customers/login')
+    //     .send({
+    //       email: 'gokee@gmail.com',
+    //       password: 'fishboy666'
+    //     })
+    //     .end((err, res) => {
+    //       console.log('===+++++++', err);
+    //       expect(res.status).to.be.equal(400);
+    //       expect(res.body).to.be.an('object');
+    //       expect(res.body).to.contain('error');
+    //       expect(res.body.error).to.contain('status');
+    //       expect(res.body.error.message).to.be.equal('Email or Password is invalid.');
+    //       expect(res.body.error.code).to.be.equal('USR_01');
+    //     });
+    //   done();
+    // });
+
+    it('should fail if email does not exist', (done) => {
+      chai.request(app)
+        .post('/api/v1/customers/login')
+        .send({
+          email: 'ibrahim@gmail.com',
+          password: 'calory20'
+        })
+        .end((err, res) => {
+          expect(res.status).to.be.equal(400);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.contain('error');
+          expect(res.body.error).to.contain('status');
+          expect(res.body.error.message).to.be.equal('The email doesn\'t exist.');
+          expect(res.body.error.code).to.be.equal('USR_05');
+          expect(res.body.error.field).to.be.equal('email');
+        });
+      done();
+    });
+
+    // it('should login user successfully', (done) => {
+    //   chai.request(app)
+    //     .post('/api/v1/customers/login')
+    //     .send({
+    //       email: validuser.email,
+    //       password: validuser.password
+    //     })
+    //     .end((err, res) => {
+    //       expect(res.status).to.be.equal(200);
+    //       expect(res.body).to.be.an('object');
+    //       expect(res.body).to.contain('accessToken');
+    //       expect(res.body).to.contain('customer');
+    //     });
+    //   done();
+    // });
+  });
 });

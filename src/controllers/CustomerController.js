@@ -19,6 +19,22 @@ class CustomerController {
       return res.status(500).json({ error });
     }
   }
+
+  /**
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} userObject
+   * @memberof CustomerController
+   */
+  static async authenticateCustomer(req, res) {
+    try {
+      const customer = await CustomerService.loginCustomer(req, res);
+      return customer;
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  }
 }
 
 export default CustomerController;

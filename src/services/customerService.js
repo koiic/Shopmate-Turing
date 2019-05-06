@@ -3,7 +3,7 @@ import helpers from '../utils/helper';
 import TokenAuthenticator from '../middlewares/TokenAuthenticator';
 
 const { Customer } = Model;
-const { hash } = helpers;
+const { hash, compare } = helpers;
 /**
  * @class CustomerService
  */
@@ -43,6 +43,53 @@ class CustomerService {
         accessToken: `Bearer ${token}`,
         expires_in: process.env.TOKEN_EXPIRATION
       });
+    } catch (error) {
+      return response.status(500).json({
+        code: 'USR_05',
+        message: error.parent.sqlMessage
+      });
+    }
+  }
+
+  /**
+   * @static
+   * @param {*} request
+   * @param {*} response
+   * @returns {object} userData
+   * @memberof CustomerService
+   */
+  static async loginCustomer(request, response) {
+    const { email, password } = request.body;
+    try {
+      const checkCustomer = await Customer.findOne({
+        where: { email }
+      });
+      if (checkCustomer) {
+        const validatePassword = await compare(password, checkCustomer.password);
+        if (validatePassword) {
+          const token = TokenAuthenticator.generateToken({
+            name: checkCustomer.name,
+            id: checkCustomer.id,
+            email: checkCustomer.email
+          });
+          return response.status(200).json({
+            customer: checkCustomer,
+            accessToken: `Bearer ${token}`,
+            expires_in: process.env.TOKEN_EXPIRATION
+          });
+        }
+        return response.status(400).json({
+          code: 'USR_01',
+          message: 'Email or Password is invalid.',
+          field: 'password'
+        });
+      }
+      console.log('<><><> ------>');
+      return {
+        code: 'USR_01',
+        message: 'Email or Password is invalid.',
+        field: 'password'
+      };
     } catch (error) {
       return response.status(500).json({
         code: 'USR_05',

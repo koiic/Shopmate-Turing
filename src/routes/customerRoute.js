@@ -5,5 +5,7 @@ import AuthMiddleWare from '../middlewares/AuthMiddleware';
 const customerRoute = Router();
 
 customerRoute.post('/', AuthMiddleWare.validateSignUpRequest, CustomerController.registerCustomer);
+customerRoute.post('/login', AuthMiddleWare.validateLoginRequest, CustomerController.authenticateCustomer);
+
 
 export default customerRoute;
