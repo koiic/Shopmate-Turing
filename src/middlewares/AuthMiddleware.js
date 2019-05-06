@@ -51,30 +51,23 @@ class AuthMiddleWare {
     const {
       email, password,
     } = request.body;
-
-    if (password === undefined && email === undefined) {
-      errors.push('Please define all fields');
-    }
-    if (password.trim() === '' && email.trim() === '') {
-      errors.push('Please fill all fields');
-    }
     const emailPattern = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+.([a-zA-Z])+([a-zA-Z])+/;
-    if (!email) errors.push('Email field is required');
-    if (!emailPattern.test(email.trim())) errors.push('Email is invalid');
+    if (!email || email.trim() === '') errors.push('Email is required');
+    if (email && !emailPattern.test(email.trim())) errors.push('Email is invalid');
     if (email && email.length > 30) errors.push('email character is too long');
-    if (typeof email !== 'string') errors.push('email must be a string');
-    if (!password) errors.push('Password is required');
+    if (email && typeof email !== 'string') errors.push('email must be a string');
+    if (!password || password.trim() === '') errors.push('Password is required');
     if (password && password.length < 4) errors.push('Password must be atleast 4 characters');
-    if (typeof password !== 'string') errors.push('password must be a string');
+    if (password && typeof password !== 'string') errors.push('password must be a string');
 
-    if (!errors.length) {
-      next();
+    if (errors.length) {
+      return response.status(400).json({
+        status: 400,
+        code: 'USR_04',
+        message: errors
+      });
     }
-    return response.status(400).json({
-      status: 400,
-      code: 'USR_04',
-      message: errors
-    });
+    next();
   }
 }
 
