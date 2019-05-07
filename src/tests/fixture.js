@@ -37,6 +37,12 @@ export default {
     password: 'fishcalory'
   },
 
+  invalidpassword: {
+    email: 'gokegara@gmail.com',
+    name: 'testuser',
+    password: ''
+  },
+
   uncompleteuserdata: {
     name: 'testing',
     password: 'Password'

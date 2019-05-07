@@ -1,3 +1,6 @@
+/* eslint no-restricted-globals: ["error", "event", "fdescribe"] */
+/* eslint max-len: ["error", { "code": 500 }] */
+
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import '@babel/polyfill';
@@ -16,9 +19,9 @@ chai.use(chaiHttp);
 // let testproduct = {};
 const doBeforeEach = () => {
   before(async () => {
-    // await db.sequelize.sync({
-    //   force: true
-    // });
+    await db.sequelize.sync({
+      force: true
+    });
     await Promise.all([
       Product.create(newproduct),
       Department.create(newdepartment),
@@ -50,7 +53,6 @@ describe('product test', () => {
       chai.request(app)
         .get('/api/v1/products/1')
         .end((err, res) => {
-          console.log('++++++++++', err);
           expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           done();
@@ -171,7 +173,6 @@ describe('product test', () => {
       chai.request(app)
         .get('/api/v1/products/inDepartment/1')
         .end((err, res) => {
-          console.log('=====>', err);
           expect(res.status).to.equal(200);
           expect(res.body).to.be.an('object');
           expect(res.body.count).to.be.equal(1);
