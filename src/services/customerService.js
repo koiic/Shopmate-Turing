@@ -21,27 +21,34 @@ class CustomerService {
       const checkCustomer = await Customer.findOne({
         where: { email }
       });
-      if (checkCustomer) {
-        return response.status(409).json({
-          code: 'USR_03',
-          message: 'email already exist',
-          field: 'email'
+      if (!checkCustomer) {
+        const hashedPassword = await hash(password);
+        const registeredCustomer = await Customer.create({
+          name, email, password: hashedPassword
+        });
+        // registeredCustomer.reload();
+        if (registeredCustomer) {
+          const token = TokenAuthenticator.generateToken({
+            name: registeredCustomer.name,
+            id: registeredCustomer.id,
+            email: registeredCustomer.email
+          });
+          return response.status(201).json({
+            customer: registeredCustomer,
+            accessToken: `Bearer ${token}`,
+            expires_in: process.env.TOKEN_EXPIRATION
+          });
+        }
+        return response.status(400).json({
+          code: 'USR_01',
+          message: 'Email or Password is invalid.',
+          field: 'password'
         });
       }
-      const hashedPassword = await hash(password);
-      const registeredCustomer = await Customer.create({
-        name, email, password: hashedPassword
-      });
-      registeredCustomer.reload();
-      const token = TokenAuthenticator.generateToken({
-        name: registeredCustomer.name,
-        id: registeredCustomer.id,
-        email: registeredCustomer.email
-      });
-      return response.status(201).json({
-        customer: registeredCustomer,
-        accessToken: `Bearer ${token}`,
-        expires_in: process.env.TOKEN_EXPIRATION
+      return response.status(409).json({
+        code: 'USR_03',
+        message: 'email already exist',
+        field: 'email'
       });
     } catch (error) {
       return response.status(500).json({
@@ -65,6 +72,7 @@ class CustomerService {
         where: { email }
       });
       if (checkCustomer) {
+        // console.log('<<<<<<<<<<', checkCustomer);
         const validatePassword = await compare(password, checkCustomer.password);
         if (validatePassword) {
           const token = TokenAuthenticator.generateToken({
@@ -72,6 +80,7 @@ class CustomerService {
             id: checkCustomer.id,
             email: checkCustomer.email
           });
+          // console.log('==== success');
           return response.status(200).json({
             customer: checkCustomer,
             accessToken: `Bearer ${token}`,
@@ -84,12 +93,43 @@ class CustomerService {
           field: 'password'
         });
       }
-      console.log('<><><> ------>');
-      return {
+      return response.status(400).json({
         code: 'USR_01',
         message: 'Email or Password is invalid.',
         field: 'password'
-      };
+      });
+    } catch (error) {
+      console.log('>>>>>>>>>>>>>', error);
+      return response.status(500).json({
+        code: 'USR_05',
+        message: error
+      });
+    }
+  }
+
+  /**
+   * @static
+   * @param {*} request
+   * @param {*} response
+   * @returns {object} updated customer info
+   * @memberof CustomerService
+   */
+  static async updateCustomer(request, response) {
+    const { email } = request.decoded.customerData;
+    try {
+      const findCustomer = await Customer.findOne({
+        where: { email }
+      });
+      if (findCustomer) {
+        const updatedCustomer = await findCustomer.update(request.body);
+        delete updatedCustomer.dataValues.password;
+        return response.status(200).json(updatedCustomer);
+      }
+      return response.status(404).json({
+        code: 'USR_04',
+        message: 'Customer does not exist',
+        field: ''
+      });
     } catch (error) {
       return response.status(500).json({
         code: 'USR_05',

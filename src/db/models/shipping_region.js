@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    shipping_region_: {
+    shipping_region: {
       type: DataTypes.STRING(100),
       allowNull: false
     }
