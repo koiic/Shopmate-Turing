@@ -19,6 +19,23 @@ class ShoppingCartController {
       return res.status(500).json({ error });
     }
   }
+
+
+  /**
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} data
+   * @memberof ProductController
+   */
+  static async addToCart(req, res) {
+    try {
+      const cartItems = await ShoppingCartService.addProductToCart(req, res);
+      return cartItems;
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  }
 }
 
 export default ShoppingCartController;

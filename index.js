@@ -1,9 +1,9 @@
-import fs from 'fs';
+// import fs from 'fs';
 import express from 'express';
 import { config } from 'dotenv';
 import bodyParser from 'body-parser';
 import session from 'express-session';
-import logger from 'morgan';
+// import logger from 'morgan';
 import passport from 'passport';
 // import facebookStrategy from './src/passport/facebookconfig';
 import indexRoute from './src/routes/indexRoute';
@@ -33,8 +33,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-const logStream = fs.createWriteStream(`${__dirname}/log`, { flags: 'a' });
-app.use(logger('dev', { stream: logStream }));
+// const logStream = fs.createWriteStream(`${__dirname}/log`, { flags: 'a' });
+// app.use(logger('dev', { stream: logStream }));
 
 /* route */
 app.use('/api/v1', indexRoute);
