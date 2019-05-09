@@ -74,4 +74,31 @@ describe('shopping cart test', () => {
         });
     });
   });
+
+  describe('fetch products by cartId', () => {
+    it('should fetch products successfully', (done) => {
+      chai.request(app)
+        .get(`/api/v1/shoppingcart/${uniqueId}`)
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body[0].item_id).to.be.equal(1);
+          expect(res.body[0].name).to.be.equal('Second Product');
+          expect(res.body[0].product_id).to.be.equal(1);
+          expect(res.body).to.be.an('array');
+          expect(res.body[0].price).to.be.equal('800.00');
+          done();
+        });
+    });
+
+    it('should return empty array if cart is not found', (done) => {
+      chai.request(app)
+        .get('/api/v1/shoppingcart/iooooioo')
+        .end((err, res) => {
+          console.log(' =>>>>>', res);
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('array');
+          done();
+        });
+    });
+  });
 });
