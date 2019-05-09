@@ -101,4 +101,26 @@ describe('shopping cart test', () => {
         });
     });
   });
+
+  describe('empty shopping cart by cartId', () => {
+    it('should empty cart successfully', (done) => {
+      chai.request(app)
+        .delete(`/api/v1/shoppingcart/empty/${uniqueId}`)
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('array');
+          done();
+        });
+    });
+
+    it('should return empty array if cart is not found', (done) => {
+      chai.request(app)
+        .delete('/api/v1/shoppingcart/empty/iooooioo')
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an('array');
+          done();
+        });
+    });
+  });
 });
