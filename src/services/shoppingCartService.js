@@ -103,7 +103,7 @@ class ShoppingCartService {
   }
 
   /**
-   *@description - this method add product to cart
+   *@description - this method fetch products by cart id
    *@param {object} request
    *@param {object} response
    *@returns {list} - list of items in cart
@@ -134,6 +134,27 @@ class ShoppingCartService {
         let formattedItem = [];
         formattedItem = allCartItem.map((cartItem, i) => formatCartItems(cartItem));
         return response.status(200).json(formattedItem);
+    }
+    catch (error) {
+      return respone.status(500).json({ error: error.parent.sqlMessage})
+    }
+  }
+
+    /**
+   *@description - this method empty the shopping cart
+   *@param {object} request
+   *@param {object} response
+   *@returns {list} - empty list
+   * @static
+   * @memberof ShoppingCartService
+   */
+  static async emptyCart(request, response) {
+    const { cart_id: cartId } = request.params;
+    try {
+      await ShoppingCart.destroy({
+        where: { cart_id: cartId}
+      });
+      return response.status(200).json([]);
     }
     catch (error) {
       return respone.status(500).json({ error: error.parent.sqlMessage})

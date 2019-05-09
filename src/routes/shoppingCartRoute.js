@@ -6,7 +6,7 @@ const shoppingCartRoute = Router();
 shoppingCartRoute.get('/generatecartid', ShoppingCartController.generateCartId);
 shoppingCartRoute.post('/add', ShoppingCartController.addToCart);
 shoppingCartRoute.get('/:cart_id', ShoppingCartController.viewCartsProduct);
-// shoppingCartRoute.delete('/empty/:cart_id', ShoppingCartController.emptyCart);
+shoppingCartRoute.delete('/empty/:cart_id', ShoppingCartController.emptyShoppingCart);
 
 
 export default shoppingCartRoute;

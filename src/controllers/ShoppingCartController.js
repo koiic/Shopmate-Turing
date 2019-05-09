@@ -20,7 +20,6 @@ class ShoppingCartController {
     }
   }
 
-
   /**
    * @static
    * @param {object} req
@@ -48,6 +47,22 @@ class ShoppingCartController {
     try {
       const cartItems = await ShoppingCartService.fetchCartsProduct(req, res);
       return cartItems;
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  }
+
+  /**
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {list} data
+   * @memberof ProductController
+   */
+  static async emptyShoppingCart(req, res) {
+    try {
+      const emptiedCart = await ShoppingCartService.emptyCart(req, res);
+      return emptiedCart;
     } catch (error) {
       return res.status(500).json({ error });
     }
