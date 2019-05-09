@@ -35,7 +35,7 @@ class PaginationHelper {
       limit = parseInt(queries.limit);
     }
     if (queries.page) {
-      offset = parseInt(limit) + ((parseInt(queries.page) - 1));
+      offset = parseInt(limit) * ((parseInt(queries.page) - 1));
     }
     if (queries.descriptionLength) {
       descrLength = queries.descriptionLength;
