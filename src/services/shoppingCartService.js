@@ -110,8 +110,7 @@ class ShoppingCartService {
    * @static
    * @memberof ShoppingCartService
    */
-  static async fetchCartsProduct(request, response) {
-    const { cart_id: cartId } = request.params || req.body;
+  static async fetchCartsProduct(cartId) {
     try {
         const allCartItem = await ShoppingCart.findAll({
           where: { cart_id: cartId },
@@ -133,10 +132,10 @@ class ShoppingCartService {
         })
         let formattedItem = [];
         formattedItem = allCartItem.map((cartItem, i) => formatCartItems(cartItem));
-        return response.status(200).json(formattedItem);
+        return formattedItem
     }
     catch (error) {
-      return respone.status(500).json({ error: error.parent.sqlMessage})
+      return error;
     }
   }
 

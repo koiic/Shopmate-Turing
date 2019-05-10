@@ -44,11 +44,12 @@ class ShoppingCartController {
    * @memberof ProductController
    */
   static async viewCartsProduct(req, res) {
+    const { cart_id: cartId } = req.params || req.body;
     try {
-      const cartItems = await ShoppingCartService.fetchCartsProduct(req, res);
-      return cartItems;
+      const cartItems = await ShoppingCartService.fetchCartsProduct(cartId);
+      return res.status(200).json(cartItems);
     } catch (error) {
-      return res.status(500).json({ error });
+      return res.status(500).json({ error: error.parent.sqlMessage });
     }
   }
 

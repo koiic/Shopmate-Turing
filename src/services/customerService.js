@@ -28,11 +28,13 @@ class CustomerService {
         });
         // registeredCustomer.reload();
         if (registeredCustomer) {
+          console.log('--------', registeredCustomer);
           const token = TokenAuthenticator.generateToken({
-            name: registeredCustomer.name,
-            id: registeredCustomer.id,
-            email: registeredCustomer.email
+            name: registeredCustomer.dataValues.name,
+            id: registeredCustomer.dataValues.customer_id,
+            email: registeredCustomer.dataValues.email
           });
+          delete registeredCustomer.dataValues.password;
           return response.status(201).json({
             customer: registeredCustomer,
             accessToken: `Bearer ${token}`,
@@ -72,13 +74,13 @@ class CustomerService {
         where: { email }
       });
       if (checkCustomer) {
-        // console.log('<<<<<<<<<<', checkCustomer);
+        console.log('<<<<<<<<<<', checkCustomer);
         const validatePassword = await compare(password, checkCustomer.password);
         if (validatePassword) {
           const token = TokenAuthenticator.generateToken({
-            name: checkCustomer.name,
-            id: checkCustomer.id,
-            email: checkCustomer.email
+            name: checkCustomer.dataValues.name,
+            id: checkCustomer.dataValues.customer_id,
+            email: checkCustomer.dataValues.email
           });
           // console.log('==== success');
           return response.status(200).json({
