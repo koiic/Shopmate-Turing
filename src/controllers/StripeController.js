@@ -1,4 +1,12 @@
+import { config } from 'dotenv';
+import mailSender from '../mailer/sendMail';
+import template from '../mailer/templates';
 import StripeService from '../services/stripeService';
+
+
+config();
+
+const { confirmationMessageHtml, confirmationMessageText } = template;
 
 /**
  * @class StripeController
@@ -15,12 +23,19 @@ class StripeController {
     const {
       order_id: orderId, description, amount, currency, stripeToken
     } = req.body;
-    const { email } = req.decoded.customerData;
+    const { email, name } = req.decoded.customerData;
     const requestObj = {
       orderId, description, amount, currency, stripeToken, email
     };
     try {
       const charge = await StripeService.payWithStripe(requestObj);
+      mailSender({
+        from: process.env.MAIL_SENDER,
+        to: email,
+        subject: 'Confirmation On Your Order',
+        text: confirmationMessageText(name, process.env.BASE_URL),
+        html: confirmationMessageHtml(name, process.env.BASE_URL)
+      });
       return res.status(200).json({ charge, message: 'payment successful' });
     } catch (error) {
       if (error.message.includes('Invalid API Key')) {

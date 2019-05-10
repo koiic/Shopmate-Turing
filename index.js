@@ -39,6 +39,12 @@ app.use(passport.session());
 /* route */
 app.use('/api/v1', indexRoute);
 
+app.use('/', (req, res) => {
+  res.status(200).json({
+    message: 'welcome to shopmate .......'
+  });
+});
+
 app.listen(port, () => {
   console.log(`server listening to port http://${host}:${port}`);
 });
