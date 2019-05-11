@@ -94,7 +94,6 @@ describe('shopping cart test', () => {
       chai.request(app)
         .get('/api/v1/shoppingcart/iooooioo')
         .end((err, res) => {
-          console.log(' =>>>>>', res);
           expect(res.status).to.equal(200);
           expect(res.body).to.be.an('array');
           done();
