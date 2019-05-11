@@ -46,7 +46,11 @@ export default {
   uncompleteuserdata: {
     name: 'testing',
     password: 'Password'
+  },
+
+  newtax: {
+    tax_id: 1,
+    tax_type: 'Sales Tax at 8.5%',
+    tax_percentage: 8.50
   }
-
-
 };
