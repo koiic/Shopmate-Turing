@@ -1,3 +1,5 @@
+/* eslint no-restricted-globals: ["error", "event", "fdescribe"] */
+
 import OrderService from '../services/orderService';
 /**
  * @class OrderController
@@ -24,69 +26,30 @@ class OrderController {
     }
   }
 
-  // /**
-  //  * @static
-  //  * @param {object} req
-  //  * @param {object} res
-  //  * @returns {object} data
-  //  * @memberof ProductController
-  //  */
-  // static async viewSingleProduct(req, res) {
-  //   try {
-  //     const product = await ProductService.fetchSingleProduct(req, res);
-  //     return res.status(200).json(product);
-  //   } catch (error) {
-  //     return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
-  //   }
-  // }
-
-  // /**
-  //  * @static
-  //  * @param {object} req
-  //  * @param {object} res
-  //  * @returns {object} data
-  //  * @memberof ProductController
-  //  */
-  // static async viewProductByCategory(req, res) {
-  //   try {
-  //     const products = await ProductService.fetchProductsByCategory(req, res);
-  //     return products;
-  //   } catch (error) {
-  //     return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
-  //   }
-  // }
-
-  // /**
-  //  * @static
-  //  * @param {object} req
-  //  * @param {object} res
-  //  * @returns {object} data
-  //  * @memberof ProductController
-  //  */
-  // static async searchProduct(req, res) {
-  //   try {
-  //     const products = await ProductService.searchProduct(req, res);
-  //     return products;
-  //   } catch (error) {
-  //     return res.status(500).json(Message.internalServerError(error));
-  //   }
-  // }
-
-  // /**
-  //  * @static
-  //  * @param {object} req
-  //  * @param {object} res
-  //  * @returns {object} data
-  //  * @memberof ProductController
-  //  */
-  // static async viewProductByDepartment(req, res) {
-  //   try {
-  //     const products = await ProductService.fetchProductsByDepartment(req, res);
-  //     return products;
-  //   } catch (error) {
-  //     return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
-  //   }
-  // }
+  /**
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} success object
+   * @memberof TaxController
+   */
+  static async getOrderDetails(req, res) {
+    const { order_id: orderId } = req.params;
+    if (isNaN(orderId)) {
+      return res.status(400).json({
+        message: 'Invalid order id',
+        field: 'order id'
+      });
+    }
+    try {
+      const orderObject = await OrderService.getSingleOrderDetails(orderId);
+      return res.status(200).json(orderObject);
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message
+      });
+    }
+  }
 }
 
 export default OrderController;

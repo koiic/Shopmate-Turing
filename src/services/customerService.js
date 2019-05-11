@@ -74,7 +74,6 @@ class CustomerService {
         where: { email }
       });
       if (checkCustomer) {
-        console.log('<<<<<<<<<<', checkCustomer);
         const validatePassword = await compare(password, checkCustomer.password);
         if (validatePassword) {
           const token = TokenAuthenticator.generateToken({
@@ -101,7 +100,6 @@ class CustomerService {
         field: 'password'
       });
     } catch (error) {
-      console.log('>>>>>>>>>>>>>', error);
       return response.status(500).json({
         code: 'USR_05',
         message: error
