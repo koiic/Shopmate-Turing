@@ -31,7 +31,7 @@ class DepartmentController {
    * @param {*} req
    * @param {*} res
    * @returns {object} success object
-   * @memberof TaxController
+   * @memberof DepartmentController
    */
   static async fetchSingleDepartment(req, res) {
     const { department_id: departmentId } = req.params;
@@ -42,8 +42,8 @@ class DepartmentController {
       });
     }
     try {
-      const taxObject = await DepartmentService.getSingleDepartment(departmentId);
-      if (!taxObject) {
+      const departmentObject = await DepartmentService.getSingleDepartment(departmentId);
+      if (!departmentObject) {
         return res.status(400).json({
           error: {
             status: 400,
@@ -53,7 +53,7 @@ class DepartmentController {
           }
         });
       }
-      return res.status(200).json(taxObject);
+      return res.status(200).json(departmentObject);
     } catch (error) {
       return res.status(500).json({
         message: error.message
