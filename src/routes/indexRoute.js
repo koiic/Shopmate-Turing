@@ -7,6 +7,7 @@ import orderRoute from './orderRoute';
 import stripeRoute from './stripeRoute';
 import taxRoute from './taxRoute';
 import departmentRoute from './departmentRoute';
+import categoryRoute from './categoryRoute';
 
 
 const indexRoute = Router();
@@ -19,5 +20,6 @@ indexRoute.use('/orders', orderRoute);
 indexRoute.use('/tax', taxRoute);
 indexRoute.use('/stripe', stripeRoute);
 indexRoute.use('/departments', departmentRoute);
+indexRoute.use('/categories', categoryRoute);
 
 export default indexRoute;
