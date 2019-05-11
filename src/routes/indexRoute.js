@@ -6,6 +6,8 @@ import shoppingCartRoute from './shoppingCartRoute';
 import orderRoute from './orderRoute';
 import stripeRoute from './stripeRoute';
 import taxRoute from './taxRoute';
+import departmentRoute from './departmentRoute';
+
 
 const indexRoute = Router();
 
@@ -16,5 +18,6 @@ indexRoute.use('/shoppingcart', shoppingCartRoute);
 indexRoute.use('/orders', orderRoute);
 indexRoute.use('/tax', taxRoute);
 indexRoute.use('/stripe', stripeRoute);
+indexRoute.use('/departments', departmentRoute);
 
 export default indexRoute;

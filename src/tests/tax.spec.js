@@ -58,7 +58,7 @@ describe('tax test', () => {
         });
     });
 
-    it('should fail if tax id is not found', (done) => {
+    it('should return null if tax id is not found', (done) => {
       chai.request(app)
         .get('/api/v1/tax/100')
         .end((err, res) => {
