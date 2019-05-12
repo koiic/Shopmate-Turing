@@ -28,6 +28,7 @@ module.exports = {
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT = 3306,
+    dialect: 'mysql',
     define: {
       timestamps: false
     }
