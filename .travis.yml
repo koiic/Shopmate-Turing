@@ -4,10 +4,15 @@ node_js:
   - "11.14.0"
 
 env:
-- NODE_ENV=test
+  global:
+    - export NODE_ENV=test
 
-install:
+before_script:
   - yarn install
+
+
+script:
+  - yarn run test
 
 services:
   - mysql

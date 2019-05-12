@@ -2,10 +2,7 @@
 
 
 #               Build Status
-<!-- 
-[![Build Status](https://travis-ci.org/koiic/MyDiary.svg?branch=develop)](https://travis-ci.org/koiic/MyDiary) [![Coverage Status](https://coveralls.io/repos/github/koiic/MyDiary/badge.svg?branch=develop)](https://coveralls.io/github/koiic/MyDiary?branch=develop) -->
-
-
+[![Build Status](https://travis-ci.com/koiic/Shopmate-Turing.svg?token=Q32jG2NqTmqEXpyGpEP1&branch=master)](https://travis-ci.com/koiic/Shopmate-Turing)
 
 #                   SHOPMATE
 ---
