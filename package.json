@@ -6,6 +6,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test nyc mocha --require @babel/register --timeout 20000 ./src/tests/**/'*.spec.js' --recursive --exit || true",
     "babel-node": "babel-node --presets=env",
+    "start": "cross-env NODE_ENV=production  babel-node ./index.js",
     "setup": "node ./setup.js",
     "dev": "cross-env process.env.NODE_ENV=development && npm run lint && nodemon --exec babel-node ./index.js ",
     "lint": "eslint . --fix --ignore-path .gitignore",
