@@ -4,7 +4,13 @@ import { config } from 'dotenv';
 
 config();
 
-const redisClient = asyncRedis.createClient(`redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`);
+let redisClient;
+if (process.env.NODE_ENV === 'development') {
+  redisClient = asyncRedis.createClient(`redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`);
+} else {
+  redisClient = asyncRedis.createClient(process.env.REDIS_URL);
+}
+
 
 export default {
 
