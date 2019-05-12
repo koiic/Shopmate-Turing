@@ -69,21 +69,15 @@ class ProductService {
 
   /**
    *@description - this method fetch products by their category
-   *@param {object} request
-   *@param {object} response
+   *@param {object} requestObj
    *@returns {object} -products and product count
    * @static
    * @memberof ProductService
    */
-  static async fetchProductsByCategory(request, response) {
-    const { category_id: categoryId } = request.params;
-    if (isNaN(categoryId)) {
-      return response.status(400).json({
-        message: 'Category id must be a number',
-        field: 'category id'
-      });
-    }
-    const { limit, page, description_length: descriptionLength } = request.query;
+  static async fetchProductsByCategory(requestObj) {
+    const {
+      limit, page, descriptionLength, categoryId
+    } = requestObj;
     try {
       const category = await Category.findOne({
         where: { category_id: categoryId },
@@ -100,11 +94,7 @@ class ProductService {
         }]
       });
       if (!category) {
-        return response.status(404).json({
-          code: 'CAT_01',
-          message: 'Don\'t exist in category with this id',
-          field: 'category id'
-        });
+        return null;
       }
       let rows = [];
       rows = PaginationHelper.paginateResource(category.Products, page, limit);
@@ -112,7 +102,7 @@ class ProductService {
         rows = PaginationHelper.stripRowByDescription(rows, descriptionLength);
       }
       const count = category.Products.length;
-      return response.status(200).json({ count, rows });
+      return { count, rows };
     } catch (error) {
       return error;
     }
@@ -162,21 +152,15 @@ class ProductService {
 
   /**
    *@description - this method fetch products by their department
-   *@param {object} request
-   *@param {object} response
+   *@param {object} requestObj
    *@returns {object} -products and product count
    * @static
    * @memberof ProductService
    */
-  static async fetchProductsByDepartment(request, response) {
-    const { department_id: departmentId } = request.params;
-    if (isNaN(departmentId)) {
-      return response.status(400).json({
-        message: 'Department id must be a number',
-        field: 'department id'
-      });
-    }
-    const { limit, page, description_length: descriptionLength } = request.query;
+  static async fetchProductsByDepartment(requestObj) {
+    const {
+      limit, page, descriptionLength, departmentId
+    } = requestObj;
     try {
       const department = await Department.findOne({
         where: { department_id: departmentId },
@@ -199,11 +183,7 @@ class ProductService {
         }]
       });
       if (!department) {
-        return response.status(404).json({
-          code: 'DEP_02',
-          message: 'Department with this id does not exist',
-          field: 'department id'
-        });
+        return null;
       }
       let rows = [];
       const productRow = [];
@@ -217,7 +197,7 @@ class ProductService {
         rows = PaginationHelper.stripRowByDescription(rows, descriptionLength);
       }
       const count = productRow.length;
-      return response.status(200).json({ count, rows });
+      return { count, rows };
     } catch (error) {
       return error;
     }
