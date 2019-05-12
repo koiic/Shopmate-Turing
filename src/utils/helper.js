@@ -1,4 +1,10 @@
 import bcrypt from 'bcrypt';
+import asyncRedis from 'async-redis';
+import { config } from 'dotenv';
+
+config();
+
+const redisClient = asyncRedis.createClient(`redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`);
 
 export default {
 
@@ -29,5 +35,13 @@ export default {
       image,
       subtotal: ((price * quantity) - (discountedPrice * quantity)).toFixed(2).toString()
     };
+  },
+
+  async redisCache(cacheKey, cacheObject) {
+    const result = await redisClient.get(cacheKey);
+    if (result) {
+      return JSON.parse(result);
+    }
+    await redisClient.set(cacheKey, JSON.stringify(cacheObject), 'EX', process.env.REDIS_TIMEOUT,);
   }
 };
