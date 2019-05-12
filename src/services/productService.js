@@ -16,14 +16,13 @@ const { Product, Category, Department } = Model;
 class ProductService {
   /**
    *@description - this method fetch all products
-   *@param {object} request
-   *@param {object} response
+   *@param {object} requestObject
    *@returns {object} -products and product count
    * @static
    * @memberof ProductService
    */
-  static async fetchallProduct(request, response) {
-    const { limit, page, descriptionLength } = request.query;
+  static async fetchallProduct(requestObject) {
+    const { limit, page, descriptionLength } = requestObject;
     const queries = {
       limit,
       page,
@@ -33,38 +32,31 @@ class ProductService {
       const data = await PaginationHelper.paginationHelper(Product, queries);
       return data;
     } catch (error) {
-      return response.status(500).json({ message: error.parent.sqlMessage });
+      return error;
     }
   }
 
   /**
    *@description - this method fetch single product
-   *@param {object} request
-   *@param {object} response
+   *@param {int} productId
    *@returns {object} -product and product count
    * @static
    * @memberof ProductService
    */
-  static async fetchSingleProduct(request, response) {
-    const { product_id: productId } = request.params;
-    if (isNaN(productId)) {
-      return response.status(400).json({
-        message: 'Product id must be a number',
-        field: 'product id'
+  static async fetchSingleProduct(productId) {
+    try {
+      const product = await Product.findOne({
+        where: {
+          product_id: productId
+        }
       });
-    }
-    const product = await Product.findOne({
-      where: {
-        product_id: productId
+      if (product) {
+        return product;
       }
-    });
-    if (product) {
-      return response.status(200).json(product);
+      return null;
+    } catch (error) {
+      return error;
     }
-    return response.status(404).json({
-      message: 'Product not found',
-      field: 'product id'
-    });
   }
 
   /**

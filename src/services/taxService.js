@@ -42,7 +42,6 @@ class TaxService {
         where: { tax_id: taxId }
       });
       if (tax) {
-        console.log('pppppp', tax);
         return tax;
       }
       return null;

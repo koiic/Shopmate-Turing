@@ -28,7 +28,6 @@ class CustomerService {
         });
         // registeredCustomer.reload();
         if (registeredCustomer) {
-          console.log('--------', registeredCustomer);
           const token = TokenAuthenticator.generateToken({
             name: registeredCustomer.dataValues.name,
             id: registeredCustomer.dataValues.customer_id,
@@ -81,7 +80,6 @@ class CustomerService {
             id: checkCustomer.dataValues.customer_id,
             email: checkCustomer.dataValues.email
           });
-          // console.log('==== success');
           return response.status(200).json({
             customer: checkCustomer,
             accessToken: `Bearer ${token}`,

@@ -18,8 +18,9 @@ class ProductController {
      * @memberof ProductController
      */
   static async viewAllProduct(req, res) {
+    const { limit, page, descriptionLength } = req.query;
     try {
-      const products = await ProductService.fetchallProduct(req);
+      const products = await ProductService.fetchallProduct({ limit, page, descriptionLength });
       redisCache('cacheKey', products);
       return res.status(200).json(products);
     } catch (error) {
@@ -35,9 +36,22 @@ class ProductController {
    * @memberof ProductController
    */
   static async viewSingleProduct(req, res) {
+    const { product_id: productId } = req.params;
+    if (isNaN(productId)) {
+      return res.status(400).json({
+        message: 'Product id must be a number',
+        field: 'product id'
+      });
+    }
     try {
-      const product = await ProductService.fetchSingleProduct(req, res);
-      return res.status(200).json(product);
+      const product = await ProductService.fetchSingleProduct(productId);
+      if (product) {
+        return res.status(200).json(product);
+      }
+      return res.status(404).json({
+        message: 'Product not found',
+        field: 'product id'
+      });
     } catch (error) {
       return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
     }
