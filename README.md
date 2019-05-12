@@ -116,7 +116,7 @@ npm start
 
 ##   API DOCUMENTATION
 
-The Api endpoints used for this application can be found in the app documentation through the following link: [postman documentation](https://www.getpostman.com/collections/d573b52d035c392a3fdd)
+The Api endpoints used for this application can be found in the app documentation through the following link: [postman documentation](https://documenter.getpostman.com/view/2451357/S1LyT7Qw)
 
 
 
