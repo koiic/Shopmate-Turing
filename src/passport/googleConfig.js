@@ -21,7 +21,6 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 const googleStrategy = passport.use(new GoogleStrategy(strategyObject, (accessToken, refreshToken, profile, done) => {
-  console.log('=====>', profile);
   const customer = { name: profile.displayName, email: profile.emails[0].value };
   try {
     Customer.findOrCreate({

@@ -34,7 +34,6 @@ class ShoppingCartService {
    * @memberof ShoppingCartService
    */
   static async addProductToCart(request, response) {
-    console.log(request.query)
     const { cart_id: cartId, product_id: productId, attributes } = request.query || req.body;
     if (isNaN(productId)) {
       return response.status(400).json({

@@ -35,7 +35,6 @@ class TaxController {
    */
   static async fetchSingleTax(req, res) {
     const { tax_id: taxId } = req.params;
-    console.log('tax', taxId);
     if (isNaN(taxId)) {
       return res.status(400).json({
         message: 'Invalid tax id',
