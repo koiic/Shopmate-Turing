@@ -43,11 +43,15 @@ export default {
     };
   },
 
-  async redisCache(cacheKey, cacheObject) {
+  async setCacheProduct(cacheKey, cacheObject) {
+    await redisClient.set(cacheKey, JSON.stringify(cacheObject), 'EX', process.env.REDIS_TIMEOUT,);
+  },
+
+  async getCacheProduct(cacheKey) {
     const result = await redisClient.get(cacheKey);
     if (result) {
       return JSON.parse(result);
     }
-    await redisClient.set(cacheKey, JSON.stringify(cacheObject), 'EX', process.env.REDIS_TIMEOUT,);
+    return null;
   }
 };

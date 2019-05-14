@@ -27,20 +27,13 @@ class ShoppingCartService {
 
   /**
    *@description - this method add product to cart
-   *@param {object} request
-   *@param {object} response
+   *@param {object} requestObject
    *@returns {list} - list of items in cart
    * @static
    * @memberof ShoppingCartService
    */
-  static async addProductToCart(request, response) {
-    const { cart_id: cartId, product_id: productId, attributes } = request.query || req.body;
-    if (isNaN(productId)) {
-      return response.status(400).json({
-        message: 'Product id must be a number',
-        field: 'product id'
-      });
-    }
+  static async addProductToCart(requestObject) {
+    const { cartId, productId, attributes } = requestObject;
     try {
       const product = await Product.findOne({
         where: {
@@ -57,7 +50,7 @@ class ShoppingCartService {
             cart_id: cartId,
             product_id: productId,
             quantity,
-            added_on: new Date().toLocaleString(),
+            added_on: new Date().toISOString().slice(0, 19).replace('T', ' '),
             attribute: attributes
           })
         }else {
@@ -65,7 +58,7 @@ class ShoppingCartService {
             cart_id: cartId,
             product_id: productId,
             quantity: 1,
-            added_on: new Date().toLocaleString(),
+            added_on: new Date().toISOString().slice(0, 19).replace('T', ' '),
             attribute: attributes
           })
         }
@@ -89,15 +82,12 @@ class ShoppingCartService {
         })
         let formattedItem = [];
         formattedItem = allCartItem.map((cartItem, i) => formatCartItems(cartItem));
-        return response.status(200).json(formattedItem);
+        return formattedItem;
       }
-      return response.status(404).json({
-        message: 'Product not found',
-        field: 'product id'
-      });
+      return null
     }
     catch (error) {
-      return respone.status(500).json({ error: error.parent.sqlMessage})
+      return error
     }
   }
 

@@ -4,7 +4,7 @@ import ProductService from '../services/productService';
 import Message from '../utils/messageHelper';
 import helper from '../utils/helper.js';
 
-const { redisCache } = helper;
+const { getCacheProduct, setCacheProduct } = helper;
 
 /**
  * @class ProductController
@@ -20,8 +20,12 @@ class ProductController {
   static async viewAllProduct(req, res) {
     const { limit, page, descriptionLength } = req.query;
     try {
+      const cacheProducts = await getCacheProduct('cacheKey');
+      if (cacheProducts) {
+        return res.status(200).json(cacheProducts);
+      }
       const products = await ProductService.fetchallProduct({ limit, page, descriptionLength });
-      redisCache('cacheKey', products);
+      await setCacheProduct('cacheKey', products);
       return res.status(200).json(products);
     } catch (error) {
       return res.status(500).json({ error });
@@ -85,7 +89,6 @@ class ProductController {
           field: 'category id'
         });
       }
-      redisCache('cacheKey', products);
       return res.status(200).json(products);
     } catch (error) {
       return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));
@@ -136,7 +139,6 @@ class ProductController {
           field: 'department id'
         });
       }
-      redisCache('cacheKey', products);
       return res.status(200).json(products);
     } catch (error) {
       return res.status(500).json(Message.internalServerError(error.parent.sqlMessage));

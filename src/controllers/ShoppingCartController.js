@@ -1,3 +1,5 @@
+/* eslint no-restricted-globals: ["error", "event", "fdescribe"] */
+
 import ShoppingCartService from '../services/shoppingCartService';
 
 /**
@@ -28,9 +30,23 @@ class ShoppingCartController {
    * @memberof ProductController
    */
   static async addToCart(req, res) {
+    const { cart_id: cartId, product_id: productId, attributes } = req.query || req.body;
+    if (isNaN(productId)) {
+      return res.status(400).json({
+        message: 'Product id must be a number',
+        field: 'product id'
+      });
+    }
+    const requestObj = { cartId, productId, attributes };
     try {
-      const cartItems = await ShoppingCartService.addProductToCart(req, res);
-      return cartItems;
+      const cartItems = await ShoppingCartService.addProductToCart(requestObj);
+      if (!cartItems) {
+        return res.status(404).json({
+          message: 'Product not found',
+          field: 'product id'
+        });
+      }
+      return res.status(200).json(cartItems);
     } catch (error) {
       return res.status(500).json({ error });
     }
