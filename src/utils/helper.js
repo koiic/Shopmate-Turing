@@ -20,7 +20,7 @@ export default {
   },
 
   async compare(password, customerPassword) {
-    const compared = await bcrypt.compareSync(password.trim(), customerPassword);
+    const compared = await bcrypt.compare(password.trim(), customerPassword);
     return compared;
   },
 

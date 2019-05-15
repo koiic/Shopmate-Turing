@@ -8,7 +8,7 @@
     "babel-node": "babel-node --presets=env",
     "start": "cross-env NODE_ENV=production  babel-node ./index.js",
     "setup": "node ./setup.js",
-    "dev": "cross-env process.env.NODE_ENV=development && npm run lint && nodemon --exec babel-node ./index.js ",
+    "dev": "cross-env process.env.NODE_ENV=development && yarn run lint && nodemon --exec babel-node ./index.js ",
     "lint": "eslint . --fix --ignore-path .gitignore",
     "seed": "cross-env process.env.NODE_ENV=test sequelize db:seed:all",
     "migrate-test": "cross-env process.env.NODE_ENV=test sequelize db:migrate:undo:all && sequelize db:migrate",
@@ -57,7 +57,8 @@
     "passport-google-auth": "^1.0.2",
     "passport-google-oauth": "^2.0.0",
     "sequelize": "^5.8.2",
-    "stripe": "^6.34.0"
+    "stripe": "^6.34.0",
+    "yarn": "^1.16.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",

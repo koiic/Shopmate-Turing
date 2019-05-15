@@ -26,7 +26,6 @@ class CustomerService {
         const registeredCustomer = await Customer.create({
           name, email, password: hashedPassword
         });
-        // registeredCustomer.reload();
         if (registeredCustomer) {
           const token = TokenAuthenticator.generateToken({
             name: registeredCustomer.dataValues.name,
@@ -73,7 +72,7 @@ class CustomerService {
         where: { email }
       });
       if (checkCustomer) {
-        const validatePassword = await compare(password, checkCustomer.password);
+        const validatePassword = await compare(password, checkCustomer.dataValues.password);
         if (validatePassword) {
           const token = TokenAuthenticator.generateToken({
             name: checkCustomer.dataValues.name,

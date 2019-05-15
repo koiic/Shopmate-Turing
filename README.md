@@ -79,8 +79,8 @@ npm start
 
 | Http-Method   | Url           |
 | ------------- |:-----------------:|
-| POST          |    **/charge      |
-| POST          |   **/token        |
+| POST          |    **/charge**      |
+| POST          |   **/token**        |
 
 
 >**category url** =`/categories`
@@ -103,7 +103,7 @@ npm start
 | ------------- |:-----------------:|
 | GET           |    **/generatecartid** |
 | POST          |   **/add**        |
-| GET           |   **/:cart_id*    |
+| GET           |   **/:cart_id**    |
 | DELETE        |   **/empty/:cart_id**|
 
 >**tax url** =`/tax`
